@@ -1,11 +1,7 @@
 cmake_minimum_required(VERSION 3.0)
 
-if (MSVC)
-
-else()    
-    execute_process(COMMAND protoc -I=./ --cpp_out=./ ./demo.proto
-    WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR})    
-endif()
+execute_process(COMMAND protoc -I=./ --cpp_out=./ ./demo.proto
+WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR})    
 
 include_directories(../src/)
 include_directories(../proto/)
