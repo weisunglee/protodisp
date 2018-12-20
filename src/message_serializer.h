@@ -13,7 +13,6 @@ namespace proto {
     private:
         template<typename T>
         static std::string serialize(T&& message, const std::string& full_name);
-
         static std::string wrap(std::string&& buf, const std::string& full_name);        
     };
 

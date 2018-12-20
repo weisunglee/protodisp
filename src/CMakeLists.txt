@@ -9,7 +9,10 @@ set(LIB_PROTO_MESSAGE_SRC
     message_serializer.h
     message_serializer.cpp        
     message_deserializer.h
-    message_deserializer.cpp        
+    message_deserializer.cpp  
+    message_handler.h
+    message_dispatcher.h
+    message_dispatcher.cpp      
 )
 
 add_library(lib_proto_message ${LIB_PROTO_MESSAGE_SRC})

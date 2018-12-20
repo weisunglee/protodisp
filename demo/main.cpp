@@ -14,8 +14,8 @@ int main()
   std::cout << dmi.data() << std::endl;
   std::cout << dms.data() << std::endl;  
 
-  std::string dmi_serialized = proto::message_serializer::serialize(dmi);
-  std::string dms_serialized = proto::message_serializer::serialize(dms);
+  std::string dmi_serialized = proto::message_serializer::serialize(std::move(dmi));
+  std::string dms_serialized = proto::message_serializer::serialize(std::move(dms));
 
   auto dmi_deserialized = proto::message_deserializer::deserialize(dmi_serialized.c_str(), dmi_serialized.length());
   auto dms_deserialized = proto::message_deserializer::deserialize(dms_serialized.c_str(), dms_serialized.length());
