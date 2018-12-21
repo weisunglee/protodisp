@@ -2,6 +2,8 @@
 #include <iostream>
 #include "message_serializer.h"
 #include "message_deserializer.h"
+#include "message_handler.h"
+#include "message_dispatcher.h"
 
 int main()
 {
@@ -22,6 +24,14 @@ int main()
 
   std::cout << std::dynamic_pointer_cast<demo::demo_message_int>(dmi_deserialized)->data() << std::endl;
   std::cout << std::dynamic_pointer_cast<demo::demo_message_string>(dms_deserialized)->data() << std::endl;
-    
+
+  proto::message_dispatcher dispatcher;
+  dispatcher.register_handler<demo::demo_message_string>([](proto::message_ptr<demo::demo_message_string>&& message){
+    std::cout << message->data() << std::endl;
+  });
+
+  proto::message_ptr<demo::demo_message_string> dms2 = std::make_shared<demo::demo_message_string>();
+  dms2->set_data("dispatched");
+  dispatcher.dispatch(std::move(dms2));
   return 0;
 }
