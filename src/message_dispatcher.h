@@ -2,7 +2,7 @@
 #define MESSAGE_DISPATCHER_H_
 
 #include "message_handler.h"
-#include <unordered_map>
+#include <map>
 
 // forward declaration
 namespace google {
@@ -14,16 +14,23 @@ namespace google {
 
 namespace proto {
 
-    using handler_map = std::unordered_map<const google::protobuf::Descriptor*, message_ptr<message_handler_interface>>;
-
+    using handler_map = std::map<const google::protobuf::Descriptor*, message_ptr<message_handler_interface>>;
+    
     class message_dispatcher {
+    public:
+        message_dispatcher() = default;
+        message_dispatcher(const message_dispatcher&) = delete;        
+        message_dispatcher& operator=(const message_dispatcher&) = delete;
+        message_dispatcher(message_dispatcher&&) = delete;
+        message_dispatcher& operator=(message_dispatcher&&) = delete;
+
     public:
         template<typename T>
         void register_handler(handler_type<T>&& handler);
-        void dispatch(message_ptr<google::protobuf::Message>&& message) const;      
+        void dispatch(message_ptr<google::protobuf::Message>&& message) const;
 
     private:
-        handler_map handlers_;    
+        handler_map handlers_;        
     };
 
     template<typename T>

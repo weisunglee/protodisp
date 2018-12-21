@@ -25,6 +25,13 @@ namespace proto {
     template<typename T>
     class message_handler_base : public message_handler_interface {
     public:
+        message_handler_base() = default;
+        message_handler_base(const message_handler_base&) = delete;        
+        message_handler_base& operator=(const message_handler_base&) = delete;
+        message_handler_base(message_handler_base&&) = delete;
+        message_handler_base& operator=(message_handler_base&&) = delete;
+
+    public:
         void on_message(message_ptr<google::protobuf::Message>&& message) override {
             static_cast<T*>(this)->on_message(std::move(message));
         }        
@@ -35,27 +42,24 @@ namespace proto {
 
     template<typename T>
     class message_handler : public message_handler_base<message_handler<T>> {
-    public:                
-    
+    public:
+        message_handler() = delete;
+
+    public:                    
         message_handler(const handler_type<T>& handler)
             : handler_(handler) {}
 
         message_handler(handler_type<T>&& handler)
             : handler_(handler) {}
 
-        void on_message(message_ptr<google::protobuf::Message>&& message) {
+        void on_message(message_ptr<google::protobuf::Message>&& message) const {
             handler_(std::dynamic_pointer_cast<T>(message));
         }
-
-    private:
-        //message_handler() = delete;
-        
-
+                
     private:
         handler_type<T> handler_;        
     };
-
-
+    
 } // proto
 
 #endif // MESSAGE_HANDLER_H_

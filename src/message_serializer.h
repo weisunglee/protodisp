@@ -6,6 +6,13 @@
 
 namespace proto {
     class message_serializer {
+    public:    
+        message_serializer() = delete;        
+        message_serializer(const message_serializer&) = delete;
+        message_serializer& operator=(const message_serializer&) = delete;
+        message_serializer(message_serializer&&) = delete;
+        message_serializer& operator=(message_serializer&&) = delete;
+        
     public:
         template<typename T>
         static std::string serialize(T&& message);
