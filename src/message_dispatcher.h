@@ -35,7 +35,7 @@ namespace proto {
 
     template<typename T>
     void message_dispatcher::register_handler(handler_type<T>&& handler) {
-        message_ptr<message_handler_interface> handler_ptr = std::make_shared<message_handler<T>>(handler);
+        message_ptr<message_handler_interface> handler_ptr = std::make_shared<message_handler<T>>(std::move(handler));
         handlers_[T::descriptor()] = handler_ptr;
     }
 } // proto

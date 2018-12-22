@@ -50,7 +50,7 @@ namespace proto {
             : handler_(handler) {}
 
         message_handler(handler_type<T>&& handler)
-            : handler_(handler) {}
+            : handler_(std::move(handler)) {}
 
         void on_message(message_ptr<google::protobuf::Message>&& message) const {
             handler_(std::dynamic_pointer_cast<T>(message));
