@@ -15,6 +15,7 @@ namespace google {
 namespace proto {
 
     using handler_map = std::map<const google::protobuf::Descriptor*, message_ptr<message_handler_interface>>;
+    using unknown_message_handler = handler_type<google::protobuf::Message>;
     
     class message_dispatcher {
     public:
@@ -24,13 +25,17 @@ namespace proto {
         message_dispatcher(message_dispatcher&&) = delete;
         message_dispatcher& operator=(message_dispatcher&&) = delete;
 
+        message_dispatcher(unknown_message_handler&& error_handler)
+            : error_handler_(std::move(error_handler)) {}        
+
     public:
         template<typename T>
         void register_handler(handler_type<T>&& handler);
         void dispatch(message_ptr<google::protobuf::Message>&& message) const;
 
     private:
-        handler_map handlers_;        
+        handler_map handlers_;
+        unknown_message_handler error_handler_;
     };
 
     template<typename T>

@@ -53,11 +53,11 @@ namespace proto {
             : handler_(std::move(handler)) {}
 
         void on_message(message_ptr<google::protobuf::Message>&& message) const {
-            handler_(std::dynamic_pointer_cast<T>(message));
+            handler_(std::static_pointer_cast<T>(message));
         }
                 
     private:
-        handler_type<T> handler_;        
+        handler_type<T> handler_;            
     };
     
 } // proto

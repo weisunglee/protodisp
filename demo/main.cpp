@@ -25,13 +25,21 @@ int main()
   std::cout << std::dynamic_pointer_cast<demo::demo_message_int>(dmi_deserialized)->data() << std::endl;
   std::cout << std::dynamic_pointer_cast<demo::demo_message_string>(dms_deserialized)->data() << std::endl;
 
-  proto::message_dispatcher dispatcher;
+  proto::message_dispatcher dispatcher([](proto::message_ptr<google::protobuf::Message>&& message){
+    std::cout << "unknown message, type name:" << message->GetDescriptor()->full_name() << std::endl;
+  });
+    
   dispatcher.register_handler<demo::demo_message_string>([](proto::message_ptr<demo::demo_message_string>&& message){
     std::cout << message->data() << std::endl;
-  });
-
+  });      
+  
   proto::message_ptr<demo::demo_message_string> dms2 = std::make_shared<demo::demo_message_string>();
   dms2->set_data("dispatched");
   dispatcher.dispatch(std::move(dms2));
+
+  proto::message_ptr<demo::demo_message_int> dmi2 = std::make_shared<demo::demo_message_int>();
+  dmi2->set_data(200);
+  dispatcher.dispatch(std::move(dmi2));
+
   return 0;
 }

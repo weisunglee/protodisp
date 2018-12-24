@@ -9,6 +9,12 @@ namespace proto {
         handler_map::const_iterator it = handlers_.find(m->GetDescriptor());
         if(it != handlers_.end()) {
             it->second->on_message(std::move(m));
-        }
+            return;
+        }        
+
+        if (error_handler_) {
+            error_handler_(std::move(m));
+            return;
+        }        
     }
 } // proto
