@@ -9,9 +9,7 @@ include_directories(../proto/)
 set(DEMO_SRC
     main.cpp
     demo.pb.h
-    demo.pb.cc    
-    ../proto/proto_message.pb.h    
-    ../proto/proto_message.pb.cc
+    demo.pb.cc        
 )
 
 add_executable(tester ${DEMO_SRC})
